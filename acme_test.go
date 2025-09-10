@@ -5,13 +5,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/DigiConvent/setup_acme"
+	"github.com/digiconvent/setup_acme"
 )
 
 func TestAcmeProcess(t *testing.T) {
 	initData := &setup_acme.InitData{
 		Domain:       "<your fqdn>",
 		Emailaddress: "<your e-mailaddress>",
+		Organisation: "<your organisation>",
 	}
 	acme := setup_acme.AcmeClient{
 		DirectoryUrl: "https://acme-staging-v02.api.letsencrypt.org/directory", // use a staging url for testing

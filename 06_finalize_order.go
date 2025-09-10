@@ -15,8 +15,8 @@ func (acme *AcmeClient) finalizeOrder() error {
 
 	subject := pkix.Name{
 		CommonName:         domain,
-		Organization:       []string{"DigiConvent"},
-		OrganizationalUnit: []string{domain + " - DigiConvent"},
+		Organization:       []string{acme.InitData.Organisation},
+		OrganizationalUnit: []string{domain + " - " + acme.InitData.Organisation},
 	}
 	template := x509.CertificateRequest{
 		DNSNames: []string{domain, "www." + domain},

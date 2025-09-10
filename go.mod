@@ -1,4 +1,4 @@
-module github.com/DigiConvent/setup_acme
+module github.com/digiconvent/setup_acme
 
 go 1.24.4
 

@@ -13,6 +13,7 @@ type InitData struct {
 	Emailaddress      string // mandatory, for creating an acme account
 	DomainPrivateKey  string // optional, will be generated if left empty
 	AccountPrivateKey string // optional, will be generated if left empty
+	Organisation      string
 
 	// derived from the values above
 	domainPrivateKey  *rsa.PrivateKey
@@ -87,6 +88,9 @@ func (acme *AcmeClient) NeedsRenewal() (bool, error) {
 func (acme *AcmeClient) Do() error {
 	if acme.DirectoryUrl == "" {
 		return errors.New("directory url cannot be empty")
+	}
+	if acme.InitData.Organisation == "" {
+		return errors.New("organisation should not be empty")
 	}
 	acme.initialise()
 	if acme.InitData == nil {
