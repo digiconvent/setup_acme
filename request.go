@@ -33,7 +33,7 @@ func (acme *AcmeClient) request(url, payload string) (http.Header, []byte, error
 
 	contents, err := io.ReadAll(response.Body)
 	if err != nil {
-		return response.Header, nil, err
+		return nil, nil, err
 	}
 
 	err = acme.handleError(response.StatusCode, contents)
