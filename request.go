@@ -27,13 +27,13 @@ func (acme *AcmeClient) request(url, payload string) (http.Header, []byte, error
 
 	response, err := client.Do(request)
 	if err != nil {
-		return response.Header, nil, err
+		return nil, nil, err
 	}
 	defer response.Body.Close()
 
 	contents, err := io.ReadAll(response.Body)
 	if err != nil {
-		return nil, nil, err
+		return request.Header, nil, err
 	}
 
 	err = acme.handleError(response.StatusCode, contents)
