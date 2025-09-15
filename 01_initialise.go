@@ -8,28 +8,27 @@ import (
 )
 
 func (acme *AcmeClient) initialise() error {
-
 	res, err := http.Get(acme.DirectoryUrl)
 	if err != nil {
-		return err
+		return errors.New("could not reach directory url'" + acme.DirectoryUrl + "': " + err.Error())
 	}
 
 	defer res.Body.Close()
 
 	contents, err := io.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return errors.New("could not read directory url response: " + err.Error())
 	}
 
 	err = json.Unmarshal(contents, &acme.client.urls)
 	if err != nil {
-		return err
+		return errors.New("could not parse directory response: " + string(contents))
 	}
 
 	// get the nonce
 	response, err := http.Head(acme.client.urls.NewNonce)
 	if err != nil {
-		return err
+		return errors.New("could not fetch a new nonce: " + err.Error())
 	}
 
 	if response.StatusCode != 200 {
