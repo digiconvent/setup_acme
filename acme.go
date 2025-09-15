@@ -86,18 +86,21 @@ func (acme *AcmeClient) NeedsRenewal() (bool, error) {
 }
 
 func (acme *AcmeClient) Do() error {
+	var err error
 	if acme.DirectoryUrl == "" {
 		return errors.New("directory url cannot be empty")
 	}
 	if acme.InitData.Organisation == "" {
 		return errors.New("organisation should not be empty")
 	}
-	acme.initialise()
+	err = acme.initialise()
+	if err != nil {
+		return err
+	}
 	if acme.InitData == nil {
 		return errors.New("init data cannot be empty")
 	}
 
-	var err error
 	var domainPk *rsa.PrivateKey
 	if acme.InitData.DomainPrivateKey == "" {
 		domainPk, err = rsa.GenerateKey(rand.Reader, 2048)
