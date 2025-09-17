@@ -4,14 +4,27 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 )
 
 func certToString(cert *x509.Certificate) string {
-	return string(cert.Raw)
+	return string(pem.EncodeToMemory(&pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: cert.Raw,
+	}))
 }
 
 func stringToCert(rawCert string) (*x509.Certificate, error) {
-	return x509.ParseCertificate([]byte(rawCert))
+	block, _ := pem.Decode([]byte(rawCert))
+	if block == nil {
+		return nil, errors.New("could not convert pem to certificate")
+	}
+
+	if block.Type != "CERTIFICATE" {
+		return nil, errors.New("provided string is no certificate")
+	}
+
+	return x509.ParseCertificate(block.Bytes)
 }
 
 func privateKeyToString(key *rsa.PrivateKey) string {
